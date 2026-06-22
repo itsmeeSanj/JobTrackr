@@ -59,3 +59,136 @@ So I built JobTrackr to solve my own problem.
 ---
 
 ## 📁 Project Structure
+JobTrackr/
+
+├── client/
+
+│   └── src/
+
+│       ├── features/
+
+│       │   ├── auth/
+
+│       │   └── jobs/
+
+│       ├── layouts/
+
+│       ├── components/
+
+│       ├── api/
+
+│       ├── hooks/
+
+│       ├── types/
+
+│       └── router/
+
+└── server/
+
+├── controllers/
+
+├── models/
+
+├── routes/
+
+├── middleware/
+
+└── config/
+
+
+
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js v18+
+- MongoDB Atlas account
+- Brevo account (free tier)
+
+### 1. Clone the repo
+```bash
+git clone https://github.com/itsmeeSanj/JobTrackr.git
+cd JobTrackr
+```
+
+### 2. Setup server
+```bash
+cd server
+npm install
+cp .env.example .env
+npm run dev        # starts with nodemon on localhost:4000
+```
+
+### 3. Setup client
+```bash
+cd client
+npm install
+npm run dev        # starts on localhost:5173
+```
+
+---
+
+## ⚙️ Environment Variables
+
+Create `server/.env` using `.env.example`:
+
+```env
+MONGODB_URI=
+JWT_SECRET=
+PORT=4000
+NODE_ENV=development
+CLIENT_URL=http://localhost:5173
+SMTP_USER=
+SMTP_PASSWORD=
+SENDER_EMAIL=
+```
+> ⚠️ Never commit your real `.env` — already in `.gitignore`
+
+---
+
+## 🔑 API Reference
+
+### Auth Routes `/api/auth`
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/register` | Register user |
+| POST | `/login` | Login user |
+| POST | `/logout` | Logout user |
+| POST | `/send-reset-otp` | Send OTP |
+| POST | `/verify-reset-otp` | Verify OTP |
+| POST | `/reset-password` | Reset password |
+
+### Job Routes `/api/jobs`
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Get all jobs |
+| POST | `/` | Add new job |
+| GET | `/:id` | Get single job |
+| PUT | `/:id` | Update job |
+| DELETE | `/:id` | Delete job |
+| GET | `/stats` | Get dashboard stats |
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Resume upload per application
+- [ ] Follow-up email reminders
+- [ ] Interview notes
+- [ ] Chrome extension to add jobs from LinkedIn
+- [ ] Export to CSV
+
+---
+
+## 👤 Author
+
+**Sanjay Rawal**
+- GitHub: [@itsmeeSanj](https://github.com/itsmeeSanj)
+- LinkedIn: [your-linkedin-url]
+
+---
+
+## 📄 License
+MIT
