@@ -186,7 +186,7 @@ SENDER_EMAIL=
 
 **Sanjay Rawal**
 - GitHub: [@itsmeeSanj](https://github.com/itsmeeSanj)
-- LinkedIn: [your-linkedin-url]
+- LinkedIn: [https://www.linkedin.com/in/sanjay-rawal-311846184/]
 
 ---
 
