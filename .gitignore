@@ -8,6 +8,8 @@ server/node_modules/
 .env.development
 .env.production
 **/.env*
+client/.env        ← add this specifically
+server/.env        ← add this specifically
 
 # Build outputs
 client/build/
