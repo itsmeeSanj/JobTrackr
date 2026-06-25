@@ -7,8 +7,8 @@ server/node_modules/
 .env.local
 .env.development
 .env.production
-client/.env        ← add this specifically
-server/.env        ← add this specifically
+client/.env        
+server/.env        
 
 # Build outputs
 client/build/
