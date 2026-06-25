@@ -10,6 +10,9 @@ import jobRouter from "./routes/jobRoutes.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
+// connect to database
+connectDB();
+
 // Middlewares
 app.use(
   cors({
