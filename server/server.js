@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api/aut", authRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/jobs", jobRouter);
 
 // start server
