@@ -6,6 +6,7 @@ export default async function connectDB() {
     mongoose.connection.on("connected", () => {
       console.log(`MongoDB Connected: ${mongoose.connection.host}`);
     });
+
     await mongoose.connect(process.env.MONGODB_URI);
   } catch (error) {
     console.error("MongoDB connection error:", error);
