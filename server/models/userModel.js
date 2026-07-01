@@ -1,4 +1,4 @@
-// Job schema
+// User schema
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -12,13 +12,11 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     password: { type: String, required: true, minlength: 8 },
-
     role: {
       type: String,
       enum: ["user", "admin"],
-      default: "user", // ← everyone starts as user
+      default: "user",
     },
-
     resetOtp: { type: String, default: "" },
     resetOtpExpireAt: { type: Number, default: 0 },
   },
