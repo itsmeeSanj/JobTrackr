@@ -28,13 +28,13 @@ export async function register(req, res) {
     const user = new userModel({ name, email, password: hashed });
     await user.save();
 
-    //  Generate verification OTP
+    //  Generate OTP
     const OTP = String(Math.floor(100000 + Math.random() * 900000));
     user.verifyOtp = OTP;
     user.verifyOtpExpireAt = Date.now() + 10 * 60 * 1000; // 10 mins
     await user.save();
 
-    // send verification email
+    // send email
     await transporter.sendMail({
       from: process.env.SENDER_EMAIL,
       to: email,
@@ -51,10 +51,12 @@ export async function register(req, res) {
       `,
     });
 
+    // create tokens
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
+    // set cookie
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -62,6 +64,7 @@ export async function register(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    // send response
     return res.json({
       success: true,
       message: "Account created successfully",
@@ -107,6 +110,10 @@ export async function login(req, res) {
       });
     }
 
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -142,13 +149,146 @@ export async function logout(req, res) {
   }
 }
 
+// verify email
+export async function verifyEmail(req, res) {
+  const { otp } = req.body;
+
+  if (!otp) {
+    res.json({
+      success: false,
+      message: "OTP is required",
+    });
+  }
+
+  try {
+    const user = await userModel.findById(req.userId);
+
+    if (!user) {
+      res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    if (user.verifyOtp === "" || user.verifyOtp !== otp) {
+      res.json({
+        success: false,
+        message: "Invalid OTP",
+      });
+    }
+    if (user.verifyOtpExpireAt < Date.now()) {
+      res.json({ success: false, message: "OTP has expired" });
+    }
+
+    user.isAccountVerified = true;
+    user.verifyOtp = "";
+    user.verifyOtpExpireAt = 0;
+    await user.save();
+
+    return res.json({ success: true, message: "Email verified success" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+}
+
 // send reset otp
 export async function sendResetOtp(req, res) {
-  res.json({ success: true, message: "sendResetOtp" });
+  const { email } = req.body;
+  if (!email) {
+    return res.json({ success: false, message: "Email is required" });
+  }
+
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    const OTP = String(Math.floor(100000 + Math.random() * 900000));
+    user.resetOtp = OTP;
+    user.resetOtpExpireAt = Date.now() + 15 * 60 * 1000;
+    await user.save();
+
+    // send email
+    await transporter.sendMail({
+      from: process.env.SENDER_EMAIL,
+      to: email,
+      subject: "JobTrackr — Password Reset OTP",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 400px; margin: auto;">
+          <h2>Password Reset</h2>
+          <p>Your OTP to reset your password is:</p>
+          <h1 style="letter-spacing: 8px; color: #4F46E5;">${OTP}</h1>
+          <p>Valid for <strong>15 minutes</strong>.</p>
+          <p>If you did not request this, ignore this email.</p>
+        </div>
+      `,
+    });
+
+    return res.json({ success: true, message: "OTP sent to your email" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
 }
 export async function verifyResetOtp(req, res) {
-  res.json({ success: true, message: "verifyResetOtp" });
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.json({ success: false, message: "Email and OTP are required" });
+  }
+
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+    if (user.resetOtp === "" || user.resetOtp !== otp) {
+      return res.json({ success: false, message: "Invalid OTP" });
+    }
+    if (user.resetOtpExpireAt < Date.now()) {
+      return res.json({ success: false, message: "OTP has expired" });
+    }
+
+    return res.json({ success: true, message: "OTP verified" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
 }
+
+// reset password
 export async function resetPassword(req, res) {
-  res.json({ success: true, message: "resetPassword" });
+  const { email, otp, newPassword } = req.body;
+
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Email, OTP and new password are required",
+    });
+  }
+
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+    if (user.resetOtp === "" || user.resetOtp !== otp) {
+      return res.json({ success: false, message: "Invalid OTP" });
+    }
+    if (user.resetOtpExpireAt < Date.now()) {
+      return res.json({
+        success: false,
+        message: "OTP has expired, please request a new one",
+      });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.resetOtp = "";
+    user.resetOtpExpireAt = 0;
+    await user.save();
+
+    return res.json({ success: true, message: "Password reset successfully" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
 }
