@@ -154,29 +154,19 @@ export async function verifyEmail(req, res) {
   const { otp } = req.body;
 
   if (!otp) {
-    res.json({
-      success: false,
-      message: "OTP is required",
-    });
+    return res.json({ success: false, message: "OTP is required" }); // ← return
   }
 
   try {
     const user = await userModel.findById(req.userId);
-
     if (!user) {
-      res.json({
-        success: false,
-        message: "User not found",
-      });
+      return res.json({ success: false, message: "User not found" }); // ← return
     }
     if (user.verifyOtp === "" || user.verifyOtp !== otp) {
-      res.json({
-        success: false,
-        message: "Invalid OTP",
-      });
+      return res.json({ success: false, message: "Invalid OTP" }); // ← return
     }
     if (user.verifyOtpExpireAt < Date.now()) {
-      res.json({ success: false, message: "OTP has expired" });
+      return res.json({ success: false, message: "OTP has expired" }); // ← return
     }
 
     user.isAccountVerified = true;
@@ -184,9 +174,9 @@ export async function verifyEmail(req, res) {
     user.verifyOtpExpireAt = 0;
     await user.save();
 
-    return res.json({ success: true, message: "Email verified success" });
+    return res.json({ success: true, message: "Email verified successfully" });
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    return res.json({ success: false, message: error.message });
   }
 }
 
@@ -231,6 +221,8 @@ export async function sendResetOtp(req, res) {
     return res.json({ success: false, message: error.message });
   }
 }
+
+// verifyResetOtp
 export async function verifyResetOtp(req, res) {
   const { email, otp } = req.body;
 
