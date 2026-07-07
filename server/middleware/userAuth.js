@@ -3,7 +3,7 @@
 import jwt from "jsonwebtoken";
 
 export default async function userAuth(req, res, next) {
-  const token = req.cookie?.token;
+  const token = req.cookies?.token;
   if (!token) {
     return res.status(401).json({
       success: false,
@@ -19,6 +19,9 @@ export default async function userAuth(req, res, next) {
         message: "Not Authorized",
       });
     }
+
+    req.userId = decoded.id;
+    return next();
   } catch (error) {
     return res.status(401).json({
       success: false,
