@@ -1,10 +1,9 @@
-// register, login, logout, OTP
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
 import userModel from "../models/userModel.js";
 import transporter from "../utils/sendEmail.js";
 
+// ── Register ──────────────────────────────────────────
 export async function register(req, res) {
   const { name, email, password } = req.body;
 
@@ -28,13 +27,13 @@ export async function register(req, res) {
     const user = new userModel({ name, email, password: hashed });
     await user.save();
 
-    //  Generate OTP
+    // ── Generate OTP ──
     const OTP = String(Math.floor(100000 + Math.random() * 900000));
     user.verifyOtp = OTP;
-    user.verifyOtpExpireAt = Date.now() + 10 * 60 * 1000; // 10 mins
+    user.verifyOtpExpireAt = Date.now() + 10 * 60 * 1000;
     await user.save();
 
-    // send email
+    // ── Send verification email ──
     await transporter.sendMail({
       from: process.env.SENDER_EMAIL,
       to: email,
@@ -51,12 +50,12 @@ export async function register(req, res) {
       `,
     });
 
-    // create tokens
+    // ── Create token ──
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
-    // set cookie
+    // ── Set cookie ──
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -64,7 +63,6 @@ export async function register(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    // send response
     return res.json({
       success: true,
       message: "Account created successfully",
@@ -72,13 +70,11 @@ export async function register(req, res) {
         id: user._id,
         name: user.name,
         email: user.email,
+        isAccountVerified: user.isAccountVerified,
       },
     });
   } catch (error) {
-    res.json({
-      success: false,
-      message: error.message,
-    });
+    return res.json({ success: false, message: error.message }); // ← return added
   }
 }
 
@@ -96,18 +92,12 @@ export async function login(req, res) {
   try {
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.json({
-        success: false,
-        message: "Invalid email",
-      });
+      return res.json({ success: false, message: "Invalid email" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.json({
-        success: false,
-        message: "Invalid password",
-      });
+      return res.json({ success: false, message: "Invalid password" });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -128,6 +118,7 @@ export async function login(req, res) {
         id: user._id,
         name: user.name,
         email: user.email,
+        isAccountVerified: user.isAccountVerified, // ← added
       },
     });
   } catch (error) {
@@ -149,12 +140,48 @@ export async function logout(req, res) {
   }
 }
 
+// send reset otp
+export async function sendVerifyOtp(req, res) {
+  try {
+    const user = await userModel.findById(req.userId);
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+    if (user.isAccountVerified) {
+      return res.json({ success: false, message: "Account already verified" });
+    }
+
+    const OTP = String(Math.floor(100000 + Math.random() * 900000));
+    user.verifyOtp = OTP;
+    user.verifyOtpExpireAt = Date.now() + 10 * 60 * 1000;
+    await user.save();
+
+    await transporter.sendMail({
+      from: process.env.SENDER_EMAIL,
+      to: user.email,
+      subject: "JobTrackr — Verify your email",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 400px; margin: auto;">
+          <h2>Verify your email</h2>
+          <p>Your new verification code is:</p>
+          <h1 style="letter-spacing: 8px; color: #4F46E5;">${OTP}</h1>
+          <p>Valid for <strong>10 minutes</strong>.</p>
+        </div>
+      `,
+    });
+
+    return res.json({ success: true, message: "Verification OTP sent" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+}
+
 // verify email
 export async function verifyEmail(req, res) {
   const { otp } = req.body;
 
   if (!otp) {
-    return res.json({ success: false, message: "OTP is required" }); // ← return
+    return res.json({ success: false, message: "OTP is required" }); // ← return + typo fixed
   }
 
   try {
@@ -175,48 +202,6 @@ export async function verifyEmail(req, res) {
     await user.save();
 
     return res.json({ success: true, message: "Email verified successfully" });
-  } catch (error) {
-    return res.json({ success: false, message: error.message });
-  }
-}
-
-// send reset otp
-export async function sendResetOtp(req, res) {
-  const { email } = req.body;
-  if (!email) {
-    return res.json({ success: false, message: "Email is required" });
-  }
-
-  try {
-    const user = await userModel.findOne({ email });
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
-
-    const OTP = String(Math.floor(100000 + Math.random() * 900000));
-    user.resetOtp = OTP;
-    user.resetOtpExpireAt = Date.now() + 15 * 60 * 1000;
-    await user.save();
-
-    // send email
-    await transporter.sendMail({
-      from: process.env.SENDER_EMAIL,
-      to: email,
-      subject: "JobTrackr — Password Reset OTP",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 400px; margin: auto;">
-          <h2>Password Reset</h2>
-          <p>Your OTP to reset your password is:</p>
-          <h1 style="letter-spacing: 8px; color: #4F46E5;">${OTP}</h1>
-          <p>Valid for <strong>15 minutes</strong>.</p>
-          <p>If you did not request this, ignore this email.</p>
-        </div>
-      `,
-    });
-
-    return res.json({ success: true, message: "OTP sent to your email" });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
