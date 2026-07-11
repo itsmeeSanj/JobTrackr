@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
-// app.use("/api/jobs", jobRouter);
+app.use("/api/jobs", jobRouter);
 
 // start server
 app.listen(port, () => {
