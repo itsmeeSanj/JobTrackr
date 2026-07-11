@@ -1,8 +1,8 @@
 // CRUD + stats for jobs
 
-import jobModel from "../models/jobModel";
+import jobModel from "../models/jobModel.js";
 
-export async function addJobs(req, res) {
+export async function addJob(req, res) {
   const {
     company,
     role,
@@ -44,7 +44,7 @@ export async function addJobs(req, res) {
       job,
     });
   } catch (error) {
-    return res.json({ success: true, message: error.message });
+    return res.json({ success: false, message: error.message });
   }
 }
 
@@ -65,7 +65,7 @@ export async function getJobs(req, res) {
 }
 
 // get single jobs
-export async function getJobs(req, res) {
+export async function getJob(req, res) {
   const { id } = req.params;
 
   try {
@@ -75,21 +75,12 @@ export async function getJobs(req, res) {
     });
 
     if (!job) {
-      return res.json({
-        success: false,
-        message: "Job not found",
-      });
-
-      return res.json({
-        success: true,
-        job,
-      });
+      return res.json({ success: false, message: "Job not found" });
     }
+
+    return res.json({ success: true, job });
   } catch (error) {
-    return res.json({
-      success: false,
-      message: error.message,
-    });
+    return res.json({ success: false, message: error.message });
   }
 }
 
@@ -115,10 +106,7 @@ export async function updateJob(req, res) {
     });
 
     if (!job) {
-      return res.json({
-        success: false,
-        message: "Job not found",
-      });
+      return res.json({ success: false, message: "Job not found" });
     }
 
     if (company) job.company = company;
@@ -139,10 +127,7 @@ export async function updateJob(req, res) {
       job,
     });
   } catch (error) {
-    return res.json({
-      success: false,
-      message: error.message,
-    });
+    return res.json({ success: false, message: error.message });
   }
 }
 
@@ -157,10 +142,7 @@ export async function deleteJob(req, res) {
     });
 
     if (!job) {
-      return res.json({
-        success: false,
-        message: "Job not found",
-      });
+      return res.json({ success: false, message: "Job not found" });
     }
 
     await jobModel.findByIdAndDelete(id);
@@ -170,10 +152,7 @@ export async function deleteJob(req, res) {
       message: "Job deleted successfully",
     });
   } catch (error) {
-    return res.json({
-      success: false,
-      message: error.message,
-    });
+    return res.json({ success: false, message: error.message });
   }
 }
 
@@ -204,7 +183,7 @@ export async function getStats(req, res) {
       status: "Rejected",
     });
 
-    // job added this week
+    // ── Jobs added this week ──────────────────────────
     const weekStart = new Date();
     weekStart.setDate(weekStart.getDate() - 7);
 
