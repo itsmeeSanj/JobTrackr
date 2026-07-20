@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Root, Login, Register, ErrorFallback } from "./import";
+import { Root, Login, Register, ErrorFallback, ProtectedRoute } from "./import";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +14,12 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          // ← app pages go here later
+        ],
       },
     ],
   },

@@ -9,3 +9,4 @@ export const Register = React.lazy(
 export const ErrorFallback = React.lazy(
   () => import("../components/errorFallback/ErrorFallback"),
 );
+export const ProtectedRoute = React.lazy(() => import("./ProtectedRouter"));
