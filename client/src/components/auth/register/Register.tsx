@@ -29,7 +29,6 @@ function Register() {
       const { confirmPassword: _, ...payload } = values;
 
       const res = await fetch(`${backendUrl}/api/auth/register`, {
-        // ← register
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
