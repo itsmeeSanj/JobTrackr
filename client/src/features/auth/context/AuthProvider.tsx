@@ -20,6 +20,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const isAuthenticated = !!user;
   const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
+  console.log("backendUrl:", backendUrl);
 
   const login = (userData: User) => {
     if (!userData) return;
@@ -51,9 +52,5 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     backendUrl,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

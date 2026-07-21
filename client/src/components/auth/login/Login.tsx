@@ -1,20 +1,21 @@
 import React from "react";
-import { Button, Form, Input, Checkbox, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+
 import { MdOutlineMail } from "react-icons/md";
 import { LockOutlined } from "@ant-design/icons";
+
 import AuthSidePanel from "../common/AuthSidePanel";
-import Password from "antd/es/input/Password";
-// import { useAuth } from "../context/AuthContext";
+import AuthMobileLogo from "../common/AuthMobileLogo";
+import { useAuth } from "../../../features/auth/hooks/useAuth";
 
 interface LoginFormValues {
   email: string;
   password: string;
-  remember: boolean;
 }
 
 export default function Login() {
-  // const { login, backendUrl } = useAuth();
+  const { login, backendUrl } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [form] = Form.useForm<LoginFormValues>();
@@ -33,8 +34,10 @@ export default function Login() {
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.message);
+
       login(data.user);
       message.success(`Welcome back, ${data.user.name}!`);
+      form.resetFields(); // ← added
       navigate("/dashboard");
     } catch (error) {
       const err = error as Error;
@@ -46,22 +49,15 @@ export default function Login() {
 
   return (
     <div className='min-h-screen flex'>
-      {/* ── Left side — fixed branding panel ── */}
+      {/* Left panel */}
       <AuthSidePanel />
 
-      {/* ── Right side — scrollable form panel ── */}
+      {/* Right panel */}
       <div className='w-full lg:w-1/2 overflow-y-auto'>
         <div className='min-h-screen flex items-center justify-center p-8'>
           <div className='w-full max-w-md'>
             {/* Mobile logo */}
-            <div className='flex items-center gap-2 mb-8 lg:hidden'>
-              <div className='w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center'>
-                <span className='text-white font-bold'>J</span>
-              </div>
-              <span className='text-gray-800 font-semibold text-lg'>
-                JobTrackr
-              </span>
-            </div>
+            <AuthMobileLogo />
 
             {/* Heading */}
             <div className='mb-8'>
@@ -97,7 +93,6 @@ export default function Login() {
                   prefix={<MdOutlineMail className='text-gray-400' />}
                   placeholder='you@example.com'
                   size='large'
-                  className='rounded-lg'
                 />
               </Form.Item>
 
@@ -105,9 +100,7 @@ export default function Login() {
                 name='password'
                 label={
                   <div className='flex items-center justify-between w-full'>
-                    <span className='text-gray-700 font-medium block'>
-                      Password
-                    </span>
+                    <span className='text-gray-700 font-medium'>Password</span>
                     <Link
                       to='/reset-password'
                       className='text-indigo-600 text-sm font-medium hover:text-indigo-500'
@@ -118,23 +111,14 @@ export default function Login() {
                 }
                 rules={[
                   { required: true, message: "Please enter your password" },
-                  { min: 8, message: "Password must be at least 8 characters" },
+                  { min: 4, message: "Password must be at least 4 characters" },
                 ]}
               >
                 <Input.Password
                   prefix={<LockOutlined className='text-gray-400' />}
                   placeholder='Min. 8 characters'
                   size='large'
-                  className='rounded-lg'
                 />
-              </Form.Item>
-
-              <Form.Item name='remember' valuePropName='checked'>
-                <Checkbox>
-                  <span className='text-gray-600 text-sm'>
-                    Remember me for 7 days
-                  </span>
-                </Checkbox>
               </Form.Item>
 
               <Form.Item className='mb-4'>
