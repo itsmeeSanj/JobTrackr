@@ -1,20 +1,42 @@
-import { createBrowserRouter } from "react-router-dom";
-import { Root, Login, Register, ErrorFallback, ProtectedRoute } from "./import";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import {
+  Root,
+  Login,
+  Register,
+  ResetPassword,
+  ErrorFallback,
+  ProtectedRoute,
+  PublicRoute,
+} from "./import";
 
 const router = createBrowserRouter([
   {
-    path: "",
+    path: "/",
     element: <Root />,
     errorElement: <ErrorFallback />,
     children: [
       {
-        path: "login",
-        element: <Login />,
+        index: true,
+        element: <Navigate to='/login' replace />,
       },
       {
-        path: "register",
-        element: <Register />,
+        element: <PublicRoute />,
+        children: [
+          {
+            path: "login",
+            element: <Login />,
+          },
+          {
+            path: "register",
+            element: <Register />,
+          },
+          {
+            path: "reset-password",
+            element: <ResetPassword />,
+          },
+        ],
       },
+
       {
         element: <ProtectedRoute />,
         children: [
