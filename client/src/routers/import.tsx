@@ -14,3 +14,9 @@ export const Register = React.lazy(
 export const ResetPassword = React.lazy(
   () => import("../components/auth/resetPassword/ResetPassword"),
 );
+
+// pages
+export const AppLayout = React.lazy(() => import("../layout/AppLayout"));
+export const Dashboard = React.lazy(
+  () => import("../features/jobs/pages/Dashboard"),
+);
