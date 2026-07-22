@@ -7,6 +7,8 @@ import {
   ErrorFallback,
   ProtectedRoute,
   PublicRoute,
+  AppLayout,
+  Dashboard,
 } from "./import";
 
 const router = createBrowserRouter([
@@ -41,6 +43,13 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           // ← app pages go here later
+          {
+            element: <AppLayout />,
+            children: [
+              { path: "dashboard", element: <Dashboard /> },
+              { path: "setting", element: <Dashboard /> },
+            ],
+          },
         ],
       },
     ],
