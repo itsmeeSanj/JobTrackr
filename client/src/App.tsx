@@ -18,6 +18,12 @@ function App() {
             Form: {
               itemMarginBottom: 16,
             },
+            Menu: {
+              fontSize: 16,
+              itemColor: "#fff",
+
+              itemHoverColor: "#fcfcfc",
+            },
           },
         }}
       >
