@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../features/auth/hooks/useAuth";
 
 const { Header } = Layout;
-const { Text } = Typography;
 
 interface Props {
   collapsed: boolean;
@@ -65,20 +64,18 @@ export default function AppHeader({ collapsed, onToggle }: Props) {
         type='text'
         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         onClick={onToggle}
-        style={{ fontSize: 16, width: 64, height: 64 }}
+        style={{ fontSize: 24, width: 64 }}
       />
 
       {/* Right — user avatar + dropdown */}
-      <Dropdown menu={{ items: dropdownItems }} placement='bottomRight' arrow>
+      <Dropdown menu={{ items: dropdownItems }} placement='bottomLeft' arrow>
         <Space style={{ cursor: "pointer" }}>
           <Avatar
-            size='small'
+            size='medium'
             icon={<UserOutlined />}
             style={{ backgroundColor: "#4F46E5" }}
           />
-          <Text strong style={{ fontSize: 14 }}>
-            {user?.name}
-          </Text>
+          <p className='capitalize text-[17px] font-semibold'>{user?.name}</p>
         </Space>
       </Dropdown>
     </Header>
