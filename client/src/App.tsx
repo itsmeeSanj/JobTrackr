@@ -24,6 +24,14 @@ function App() {
 
               itemHoverColor: "#fcfcfc",
             },
+            Dropdown: {
+              fontSize: 15,
+              fontSizeIcon: 55,
+            },
+
+            Button: {
+              textHoverBg: "transparent", // Removes background tint on hover
+            },
           },
         }}
       >
