@@ -1,1 +1,53 @@
 @import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* Smooth transitions for interactive elements without jerky jumps */
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* 2. Global Core Typography and Viewport Setup */
+html {
+  font-size: 1rem; /* Base rem scaling scale */
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* 3. Clean Reset for Lists (Menus, Navigation blocks) */
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 4. Link resets to cooperate with custom colors */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 5. Custom Utility helper for Scrollbars (keeps white layout neat) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* Subtle grey bar indicator */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
