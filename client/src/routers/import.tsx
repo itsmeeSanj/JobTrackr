@@ -20,3 +20,9 @@ export const AppLayout = React.lazy(() => import("../layout/AppLayout"));
 export const Dashboard = React.lazy(
   () => import("../features/jobs/pages/Dashboard"),
 );
+export const Applications = React.lazy(
+  () => import("../features/jobs/pages/applications/Applications"),
+);
+export const AddApplications = React.lazy(
+  () => import("../features/jobs/pages/applications/AddApplications"),
+);

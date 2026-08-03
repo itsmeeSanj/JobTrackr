@@ -30,6 +30,7 @@ function AppLayout() {
             background: "#fff",
             borderRadius: 12,
             minHeight: 280,
+            fontSize: 16,
           }}
         >
           <Outlet /> {/* ← Dashboard, Applications, Kanban render here */}

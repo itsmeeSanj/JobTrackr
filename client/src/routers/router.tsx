@@ -9,6 +9,8 @@ import {
   PublicRoute,
   AppLayout,
   Dashboard,
+  Applications,
+  AddApplications,
 } from "./import";
 
 const router = createBrowserRouter([
@@ -47,6 +49,19 @@ const router = createBrowserRouter([
             element: <AppLayout />,
             children: [
               { path: "dashboard", element: <Dashboard /> },
+              {
+                path: "applications",
+                children: [
+                  {
+                    index: true,
+                    element: <Applications />,
+                  },
+                  {
+                    path: "add",
+                    element: <AddApplications />,
+                  },
+                ],
+              },
               { path: "setting", element: <Dashboard /> },
             ],
           },

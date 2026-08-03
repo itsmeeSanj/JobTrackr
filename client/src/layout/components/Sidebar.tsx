@@ -16,6 +16,16 @@ const menuItems = [
     icon: <AppstoreOutlined />,
     label: "Dashboard",
   },
+  // {
+  //   key: "/applications",
+  //   label: "Applications",
+  //   icon: <UnorderedListOutlined />,
+  //   children: [
+  //     { key: "5", label: "Create" },
+  //     { key: "7", label: "Option 7" },
+  //     { key: "8", label: "Option 8" },
+  //   ],
+  // },
   {
     key: "/applications",
     icon: <UnorderedListOutlined />,
