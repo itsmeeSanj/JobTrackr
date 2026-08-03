@@ -2,6 +2,8 @@ import React from "react";
 import { ConfigProvider } from "antd";
 import { RouterProvider } from "react-router-dom";
 
+import "./index.css";
+
 import router from "./routers/router";
 
 function App() {
@@ -10,6 +12,7 @@ function App() {
       <ConfigProvider
         theme={{
           token: {
+            fontSize: 16,
             colorPrimary: "#4F46E5",
             borderRadius: 8,
             fontFamily: "Inter, sans-serif",
