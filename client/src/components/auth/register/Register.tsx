@@ -83,7 +83,6 @@ function Register() {
               >
                 <Input
                   prefix={<CiUser className='text-gray-400' />}
-                  placeholder='John Doe'
                   size='large'
                 />
               </Form.Item>
@@ -102,7 +101,6 @@ function Register() {
               >
                 <Input
                   prefix={<MdOutlineMail className='text-gray-400' />}
-                  placeholder='you@example.com'
                   size='large'
                 />
               </Form.Item>
@@ -120,7 +118,6 @@ function Register() {
               >
                 <Input.Password
                   prefix={<LockOutlined className='text-gray-400' />}
-                  placeholder='Min. 8 characters'
                   size='large'
                 />
               </Form.Item>
@@ -150,7 +147,6 @@ function Register() {
               >
                 <Input.Password
                   prefix={<LockOutlined className='text-gray-400' />}
-                  placeholder='Re-enter your password'
                   size='large'
                 />
               </Form.Item>
