@@ -12,4 +12,4 @@ export const STATUS_OPTIONS = [
   { label: "Interview", value: "Interview" },
   { label: "Offer", value: "Offer" },
   { label: "Rejected", value: "Rejected" },
-] as const;
+];
