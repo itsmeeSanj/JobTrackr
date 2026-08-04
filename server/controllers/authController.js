@@ -34,7 +34,7 @@ export async function register(req, res) {
     await user.save();
 
     //  Send verification email
-    await transporter.sendMail({
+   transporter.sendMail({
       from: process.env.SENDER_EMAIL,
       to: email,
       subject: "JobTrackr — Verify your email",
