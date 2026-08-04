@@ -1,4 +1,4 @@
-import { Layout, Button, Avatar, Dropdown, Space, Typography } from "antd";
+import { Layout, Button, Avatar, Dropdown, Space } from "antd";
 import type { MenuProps } from "antd";
 import {
   MenuFoldOutlined,

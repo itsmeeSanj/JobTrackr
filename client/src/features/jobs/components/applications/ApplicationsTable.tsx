@@ -1,7 +1,6 @@
 import { Table, Tag, Button, Space, Popconfirm, Empty } from "antd";
 import type { TableProps } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import type { Job } from "../../../../types/job.types";
 import { STATUS_COLORS } from "../../../../constants/status";
