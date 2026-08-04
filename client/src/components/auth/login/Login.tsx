@@ -62,7 +62,7 @@ export default function Login() {
             {/* Heading */}
             <div className='mb-8'>
               <h2 className='text-2xl font-bold text-gray-900'>
-                Welcome back 👋
+                Welcome back!
               </h2>
               <p className='text-gray-500 mt-1'>
                 Sign in to your account to continue
@@ -91,32 +91,31 @@ export default function Login() {
               >
                 <Input
                   prefix={<MdOutlineMail className='text-gray-400' />}
-                  placeholder='you@example.com'
                   size='large'
                 />
               </Form.Item>
 
+              <div className='flex items-center justify-between mb-1'>
+                <span className='text-gray-700 font-medium text-sm'>
+                  Password
+                </span>
+                <Link
+                  to='/reset-password'
+                  className='text-indigo-600 text-sm font-medium hover:text-indigo-500'
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
               <Form.Item
                 name='password'
-                label={
-                  <div className='flex items-center justify-between w-full'>
-                    <span className='text-gray-700 font-medium'>Password</span>
-                    <Link
-                      to='/reset-password'
-                      className='text-indigo-600 text-sm font-medium hover:text-indigo-500'
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                }
                 rules={[
                   { required: true, message: "Please enter your password" },
-                  { min: 4, message: "Password must be at least 4 characters" },
+                  { min: 8, message: "Password must be at least 8 characters" },
                 ]}
               >
                 <Input.Password
                   prefix={<LockOutlined className='text-gray-400' />}
-                  placeholder='Min. 8 characters'
                   size='large'
                 />
               </Form.Item>
@@ -155,7 +154,7 @@ export default function Login() {
                   to='/register'
                   className='text-indigo-600 font-medium hover:text-indigo-500'
                 >
-                  Create one free
+                  Register
                 </Link>
               </p>
             </Form>

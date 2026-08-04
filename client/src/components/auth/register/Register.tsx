@@ -16,7 +16,7 @@ interface RegisterFormValues {
 }
 
 function Register() {
-  const { backendUrl } = useAuth(); // ← no login needed here
+  const { backendUrl, login } = useAuth(); // ← add login
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [form] = Form.useForm<RegisterFormValues>();
@@ -25,7 +25,6 @@ function Register() {
     try {
       setLoading(true);
 
-      // strip confirmPassword — backend doesn't need it
       const { confirmPassword: _, ...payload } = values;
 
       const res = await fetch(`${backendUrl}/api/auth/register`, {
@@ -38,9 +37,10 @@ function Register() {
       const data = await res.json();
       if (!data.success) throw new Error(data.message);
 
+      login(data.user); // ← save user to context + localStorage
       message.success("Account created! Please verify your email.");
       form.resetFields();
-      navigate("/verify-email"); // ← verify email first
+      navigate("/verify-email");
     } catch (error) {
       const err = error as Error;
       message.error(err.message || "Registration failed. Please try again.");
@@ -51,27 +51,22 @@ function Register() {
 
   return (
     <div className='min-h-screen flex'>
-      {/* Left panel */}
       <AuthSidePanel />
 
-      {/* Right panel */}
       <div className='w-full lg:w-1/2 overflow-y-auto'>
         <div className='min-h-screen flex items-center justify-center p-8'>
           <div className='w-full max-w-md'>
-            {/* Mobile logo */}
             <AuthMobileLogo />
 
-            {/* Heading */}
             <div className='mb-8'>
               <h2 className='text-2xl font-bold text-gray-900'>
-                Create your account
+                Create your account 🚀
               </h2>
               <p className='text-gray-500 mt-1'>
                 Start tracking your job applications today
               </p>
             </div>
 
-            {/* Form */}
             <Form
               form={form}
               layout='vertical'
@@ -79,7 +74,6 @@ function Register() {
               autoComplete='off'
               requiredMark={false}
             >
-              {/* Name */}
               <Form.Item
                 name='name'
                 label={
@@ -94,7 +88,6 @@ function Register() {
                 />
               </Form.Item>
 
-              {/* Email */}
               <Form.Item
                 name='email'
                 label={
@@ -114,7 +107,6 @@ function Register() {
                 />
               </Form.Item>
 
-              {/* Password */}
               <Form.Item
                 name='password'
                 label={
@@ -133,7 +125,6 @@ function Register() {
                 />
               </Form.Item>
 
-              {/* Confirm Password */}
               <Form.Item
                 name='confirmPassword'
                 label={
@@ -164,7 +155,6 @@ function Register() {
                 />
               </Form.Item>
 
-              {/* Submit */}
               <Form.Item className='mb-4'>
                 <Button
                   block
@@ -185,14 +175,12 @@ function Register() {
                 </Button>
               </Form.Item>
 
-              {/* Divider */}
               <div className='flex items-center gap-3 my-6'>
                 <div className='flex-1 h-px bg-gray-200' />
                 <span className='text-gray-400 text-sm'>or</span>
                 <div className='flex-1 h-px bg-gray-200' />
               </div>
 
-              {/* Login link */}
               <p className='text-center text-gray-600 text-sm'>
                 Already have an account?{" "}
                 <Link
@@ -204,7 +192,6 @@ function Register() {
               </p>
             </Form>
 
-            {/* Footer */}
             <p className='text-center text-gray-400 text-xs mt-8'>
               By creating an account you agree to our{" "}
               <a href='#' className='underline'>
