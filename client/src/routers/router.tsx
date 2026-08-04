@@ -4,6 +4,7 @@ import {
   Login,
   Register,
   ResetPassword,
+  VerifyEmail,
   ErrorFallback,
   ProtectedRoute,
   PublicRoute,
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
           {
             path: "reset-password",
             element: <ResetPassword />,
+          },
+          {
+            path: "verify-email",
+            element: <VerifyEmail />,
           },
         ],
       },
