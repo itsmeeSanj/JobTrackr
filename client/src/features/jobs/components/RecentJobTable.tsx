@@ -1,8 +1,9 @@
-import { Card, Empty, Table, Tag, type TableProps } from "antd";
+import { Button, Card, Empty, Table, Tag, type TableProps } from "antd";
 import type { Job } from "../../../types/job.types";
 import { useNavigate } from "react-router-dom";
 import { STATUS_COLORS } from "../../../constants/status";
 import dayjs from "dayjs";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 interface Props {
   jobs: Job[];
@@ -65,16 +66,20 @@ export default function RecentJobTable({ jobs }: Props) {
   ];
   return (
     <Card
-      title='Recent applications'
-      bordered={false}
-      style={{ borderRadius: 12 }}
+      title={
+        <h2 className='text-[15px] uppercase font-bold'>Recent applications</h2>
+      }
+      className='text-sm!'
       extra={
-        <button
+        <Button
+          icon={<FaLongArrowAltRight />}
           onClick={() => navigate("/applications")}
-          className='text-indigo-600 text-sm font-medium hover:text-indigo-500'
+          className='text-sm font-medium'
+          type='link'
+          iconPlacement='end'
         >
-          View all →
-        </button>
+          View
+        </Button>
       }
     >
       <Table

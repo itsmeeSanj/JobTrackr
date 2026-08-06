@@ -18,16 +18,11 @@ export default function StatsCard({
   suffix,
 }: Props) {
   return (
-    <Card
-      style={{
-        borderRadius: 12,
-        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-      }}
-    >
+    <Card>
       <div className='flex items-center justify-between'>
         <div>
-          <p className='text-gray-500 text-sm mb-1'>{title}</p>
-          <p className='text-2xl font-bold text-gray-900'>
+          <h2 className='text-[15px] uppercase font-bold mb-4'>{title}</h2>
+          <p className='text-2xl text-gray-900'>
             {value}
             {suffix && (
               <span className='text-base font-normal ml-1'>{suffix}</span>
@@ -35,7 +30,7 @@ export default function StatsCard({
           </p>
         </div>
         <div
-          className='w-12 h-12 rounded-xl flex items-center justify-center text-2xl'
+          className='w-13 h-13 rounded-xl flex items-center justify-center text-xl'
           style={{ backgroundColor: `${color}18`, color }}
         >
           {icon}

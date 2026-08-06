@@ -7,6 +7,7 @@ import {
   UserOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import { GoSidebarCollapse } from "react-icons/go";
 
 const { Sider } = Layout;
 
@@ -46,6 +47,11 @@ const menuItems = [
     icon: <SettingOutlined />,
     label: "Settings",
   },
+  // {
+  //   key: "/settings",
+  //   icon: <GoSidebarCollapse />,
+  //   label: "Collapse",
+  // },
 ];
 
 interface Props {
@@ -61,7 +67,7 @@ export default function Sidebar({ collapsed }: Props) {
       trigger={null}
       collapsible
       collapsed={collapsed}
-      width={230}
+      width={250}
       style={{
         overflow: "auto",
         height: "100vh",

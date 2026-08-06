@@ -129,12 +129,12 @@ export default function Applications() {
     <>
       <div className='flex flex-wrap items-center justify-between gap-4 mb-6'>
         <div>
-          <h2 className='text-xl font-bold text-gray-900'>Applications</h2>
+          <h2 className='text-xl font-bold capitalize mb-1'>Applications</h2>
           <p className='text-gray-500 text-sm'>
             {filtered.length} of {jobs.length} applications
           </p>
         </div>
-        <Button
+        {/* <Button
           type='primary'
           size='large'
           icon={<FaPlus />}
@@ -146,18 +146,17 @@ export default function Applications() {
           }}
         >
           Add Application
-        </Button>
+        </Button> */}
       </div>
 
-      {error && (
-        <Alert message={error} type='error' showIcon className='mb-4' />
-      )}
+      {error && <Alert type='error' showIcon className='mb-4' />}
 
       <ApplicationsFilters
         search={search}
         statusFilter={statusFilter}
         onSearchChange={setSearch}
         onStatusChange={setStatusFilter}
+        onclick={() => setIsModalOpen(true)}
       />
 
       <ApplicationsTable

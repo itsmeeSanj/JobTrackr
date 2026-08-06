@@ -55,37 +55,35 @@ export default function Dashboard() {
     <>
       {/* ── Welcome banner ── */}
       <div
-        className='rounded-2xl py-6 px-4 mb-4'
+        className='rounded-2xl py-7 px-4 mb-4'
         style={{
           background: "linear-gradient(135deg, #4F46E5 0%, #3730A3 100%)",
         }}
       >
-        <h3 className='text-2xl font-bold' style={{ color: "#fff", margin: 0 }}>
-          Welcome back, <span className='capitalize'>{user?.name}</span>! 👋
-        </h3>
-        <p className='text-base' style={{ color: "rgba(255,255,255,0.75)" }}>
+        <h2 className='text-xl font-bold pb-1 text-white'>
+          Welcome back, <span className='capitalize'>{user?.name}</span>!
+        </h2>
+        <p className='text-sm text-gray-100'>
           {dayjs().format("dddd, MMMM D, YYYY")} · {stats?.thisWeek ?? 0}{" "}
           applications this week
         </p>
       </div>
 
       {/* ── Error ── */}
-      {error && (
-        <Alert message={error} type='error' showIcon className='mb-6' />
-      )}
+      {error && <Alert type='error' showIcon className='mb-4' />}
 
       {/* ── Stats cards ── */}
       <StatsGrid stats={stats} />
 
       {/* ── Charts row ── */}
-      <Row gutter={[16, 16]} className='mb-6'>
+      <Row gutter={[16, 16]} className='mb-4'>
         {/* Pie chart */}
-        <Col xs={24} lg={10}>
+        <Col xs={24} lg={12}>
           <StatusPieChart stats={stats} />
         </Col>
 
         {/* Bar chart */}
-        <Col xs={24} lg={14}>
+        <Col xs={24} lg={12}>
           <StatusBarChart stats={stats} />
         </Col>
       </Row>

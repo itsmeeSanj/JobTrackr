@@ -15,7 +15,7 @@ function App() {
             fontSize: 16,
             colorPrimary: "#4F46E5",
             borderRadius: 8,
-            fontFamily: "Inter, sans-serif",
+            fontFamily: "Roboto, sans-serif",
           },
           components: {
             Form: {

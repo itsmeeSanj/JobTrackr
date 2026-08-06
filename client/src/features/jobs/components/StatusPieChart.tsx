@@ -27,9 +27,12 @@ export default function StatusPieChart({ stats }: Props) {
     : [];
   return (
     <Card
-      title='Application breakdown'
-      bordered={false}
-      style={{ borderRadius: 12 }}
+      title={
+        <h2 className='text-[15px] uppercase font-bold'>
+          Application breakdown
+        </h2>
+      }
+      className='text-sm!'
     >
       {pieData.length > 0 ? (
         <ResponsiveContainer width='100%' height={260}>

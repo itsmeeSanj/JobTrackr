@@ -31,9 +31,12 @@ export default function StatusBarChart({ stats }: Props) {
 
   return (
     <Card
-      title='Applications by status'
-      bordered={false}
-      style={{ borderRadius: 12 }}
+      title={
+        <h2 className='text-[15px] uppercase font-bold'>
+          Applications by status
+        </h2>
+      }
+      className='text-sm!'
     >
       {stats && stats.total > 0 ? (
         <ResponsiveContainer width='100%' height={260}>
