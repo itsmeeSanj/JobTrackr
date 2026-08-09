@@ -4,6 +4,7 @@ import {
   getUserData,
   getProfile,
   updateProfile,
+  changePassword,
 } from "../controllers/userController.js";
 
 const userRouter = express.Router();
