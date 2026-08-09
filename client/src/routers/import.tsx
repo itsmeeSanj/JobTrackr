@@ -29,3 +29,6 @@ export const Applications = React.lazy(
 export const AddApplications = React.lazy(
   () => import("../features/jobs/pages/applications/AddApplications"),
 );
+export const Profile = React.lazy(
+  () => import("../features/jobs/pages/profile/Profile"),
+);
