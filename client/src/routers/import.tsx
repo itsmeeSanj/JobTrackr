@@ -32,3 +32,6 @@ export const AddApplications = React.lazy(
 export const Profile = React.lazy(
   () => import("../features/jobs/pages/profile/Profile"),
 );
+export const ChangePassword = React.lazy(
+  () => import("../features/jobs/pages/changePassword/ChangePassword"),
+);
