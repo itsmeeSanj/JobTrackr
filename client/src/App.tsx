@@ -21,6 +21,15 @@ function App() {
             Form: {
               itemMarginBottom: 16,
             },
+            Input: {
+              fontSize: 15,
+            },
+            Select: {
+              fontSize: 15,
+            },
+            DatePicker: {
+              fontSize: 15,
+            },
             Menu: {
               fontSize: 16,
               itemColor: "#fff",
