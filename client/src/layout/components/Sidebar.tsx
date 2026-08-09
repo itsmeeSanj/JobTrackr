@@ -37,16 +37,12 @@ const menuItems = [
     icon: <ProjectOutlined />,
     label: "Kanban",
   },
-  {
-    key: "/profile",
-    icon: <UserOutlined />,
-    label: "Profile",
-  },
-  {
-    key: "/settings",
-    icon: <SettingOutlined />,
-    label: "Settings",
-  },
+
+  // {
+  //   key: "/settings",
+  //   icon: <SettingOutlined />,
+  //   label: "Settings",
+  // },
   // {
   //   key: "/settings",
   //   icon: <GoSidebarCollapse />,

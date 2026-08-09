@@ -97,7 +97,7 @@ export default function Profile() {
         <Row>
           {" "}
           {!editing && (
-            <Col span={12}>
+            <Col span={24} md={12}>
               <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-3 p-4 bg-gray-50 rounded-xl'>
                   <div className=' text-[15px]'>Full Name:</div>
@@ -132,7 +132,7 @@ export default function Profile() {
               </Button>
             </div>
 
-            <Col span={12}>
+            <Col span={24} md={12}>
               <Form
                 form={form}
                 onFinish={handleSave}
