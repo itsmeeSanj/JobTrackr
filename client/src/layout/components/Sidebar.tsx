@@ -4,10 +4,7 @@ import {
   AppstoreOutlined,
   UnorderedListOutlined,
   ProjectOutlined,
-  UserOutlined,
-  SettingOutlined,
 } from "@ant-design/icons";
-import { GoSidebarCollapse } from "react-icons/go";
 
 const { Sider } = Layout;
 

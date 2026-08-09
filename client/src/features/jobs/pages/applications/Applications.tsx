@@ -1,7 +1,5 @@
 import React from "react";
-import { Alert, Button, Spin, message } from "antd";
-
-import { FaPlus } from "react-icons/fa";
+import { Alert, Spin, message } from "antd";
 
 import type { Job } from "../../../../types/job.types";
 import {

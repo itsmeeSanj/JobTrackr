@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Col, Form, Input, message, Row } from "antd";
+import { Button, Col, Form, Input, message, Row } from "antd";
 import { LockOutlined, SaveOutlined } from "@ant-design/icons";
 
 import api from "../../../../lib/axios";
