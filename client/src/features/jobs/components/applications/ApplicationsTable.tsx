@@ -21,12 +21,14 @@ export default function ApplicationsTable({ jobs, onDelete, onEdit }: Props) {
       render: (text) => (
         <span className='font-medium text-gray-900'>{text}</span>
       ),
+      responsive: ["md"],
     },
     {
       title: "Role",
       dataIndex: "role",
       key: "role",
       render: (text) => <span className='text-gray-600'>{text}</span>,
+      responsive: ["md"],
     },
     {
       title: "Status",
@@ -53,9 +55,11 @@ export default function ApplicationsTable({ jobs, onDelete, onEdit }: Props) {
       render: (text) => (
         <span className='text-gray-500 text-sm'>{text || "—"}</span>
       ),
+      responsive: ["md"],
+      width: 250,
     },
     {
-      title: "Job Type",
+      title: "Job-Type",
       dataIndex: "jobType",
       key: "jobType",
       render: (text) => (
@@ -73,6 +77,8 @@ export default function ApplicationsTable({ jobs, onDelete, onEdit }: Props) {
           {dayjs(date).format("MMM DD, YYYY")}
         </span>
       ),
+      responsive: ["md"],
+      width: 125,
     },
     {
       title: "Actions",

@@ -34,7 +34,6 @@ export default function EditJobModal({
       footer={null}
       style={{ top: 20 }}
       width={{ xs: "90%", sm: "80%", md: "70%", lg: "60%" }}
-      destroyOnClose // ← resets form when modal closes
     >
       {job && (
         <JobForm

@@ -43,10 +43,10 @@ export default function ApplicationsFilters({
       <Button
         type='primary'
         size='large'
-        icon={<FaPlus />}
+        icon={<FaPlus size={15} />}
         onClick={() => onclick()}
       >
-        Add Application
+        Add
       </Button>
     </div>
   );

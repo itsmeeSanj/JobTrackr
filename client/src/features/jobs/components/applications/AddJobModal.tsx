@@ -19,7 +19,7 @@ export default function AddJobModal({
   return (
     <Modal
       title={
-        <div className='border-b pb-3 mb-2'>
+        <div className='border-b pb-2 mb-2 border-gray-300'>
           <h2 className='text-lg font-semibold text-gray-900'>
             Add Application
           </h2>
