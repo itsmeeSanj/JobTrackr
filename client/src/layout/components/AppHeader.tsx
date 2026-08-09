@@ -1,13 +1,14 @@
 import { Layout, Button, Avatar, Dropdown, Space } from "antd";
+import { useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
+
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
   LogoutOutlined,
-  SettingOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 import { useAuth } from "../../features/auth/hooks/useAuth";
 
@@ -26,21 +27,20 @@ export default function AppHeader({ collapsed, onToggle }: Props) {
     {
       key: "profile",
       icon: <UserOutlined />,
-      label: "Profile",
+      label: "My Account",
       onClick: () => navigate("/profile"),
     },
     {
-      key: "settings",
-      icon: <SettingOutlined />,
-      label: "Settings",
-      onClick: () => navigate("/settings"),
+      key: "changepassword",
+      icon: <RiLockPasswordLine />,
+      label: "Change Password",
+      onClick: () => navigate("/changepassword"),
     },
     { type: "divider" },
     {
       key: "logout",
       icon: <LogoutOutlined />,
       label: "Logout",
-      danger: true,
       onClick: logout,
     },
   ];
@@ -71,11 +71,11 @@ export default function AppHeader({ collapsed, onToggle }: Props) {
       <Dropdown menu={{ items: dropdownItems }} placement='bottomLeft' arrow>
         <Space style={{ cursor: "pointer" }}>
           <Avatar
-            size='medium'
+            size='small'
             icon={<UserOutlined />}
             style={{ backgroundColor: "#4F46E5" }}
           />
-          <p className='capitalize text-[17px] font-semibold'>{user?.name}</p>
+          <p className='capitalize text-base font-medium'>{user?.name}</p>
         </Space>
       </Dropdown>
     </Header>

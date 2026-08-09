@@ -49,3 +49,17 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+.ant-input-lg::placeholder,
+.ant-input-password-large input::placeholder {
+  font-size: 15px !important;
+  color: #9ca3af;
+}
+/*  */
+.ant-input-lg::placeholder {
+  font-size: 15px !important;
+}
+
+.ant-input-affix-wrapper-lg input::placeholder {
+  font-size: 15px !important;
+}
