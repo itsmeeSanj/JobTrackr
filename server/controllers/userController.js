@@ -73,3 +73,36 @@ export async function updateProfile(req, res) {
     return res.json({ success: false, message: error.message });
   }
 }
+
+export async function changePassword(req, res) {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    return res.json({ success: false, message: "All fields are required" });
+  }
+
+  try {
+    const user = await userModel.findById(req.userId);
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.json({
+        success: false,
+        message: "Current password is incorrect",
+      });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+
+    return res.json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+}
