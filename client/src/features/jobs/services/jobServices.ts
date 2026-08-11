@@ -28,3 +28,13 @@ export const updateJob = async (
 export const deleteJob = async (id: string): Promise<void> => {
   await api.delete(`/api/jobs/${id}`);
 };
+
+// followup
+export const getFollowUpJobs = async (): Promise<Job[]> => {
+  try {
+    const res = await api.get("/api/jobs/follow-up");
+    return res.data.jobs ?? []; // ← fallback to empty array
+  } catch {
+    return []; // ← never throw, return empty array
+  }
+};

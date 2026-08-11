@@ -1,3 +1,4 @@
+import React from "react";
 import { Layout, Button, Avatar, Dropdown, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
@@ -11,6 +12,8 @@ import {
 import { RiLockPasswordLine } from "react-icons/ri";
 
 import { useAuth } from "../../features/auth/hooks/useAuth";
+import NotificationSidebar from "./NotificationSidebar";
+import { getInitials } from "../../utils/stringUtils";
 
 const { Header } = Layout;
 
@@ -21,6 +24,14 @@ interface Props {
 
 export default function AppHeader({ collapsed, onToggle }: Props) {
   const { user, logout } = useAuth();
+  const [open, setOpen] = React.useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   const navigate = useNavigate();
 
   const dropdownItems: MenuProps["items"] = [
@@ -68,16 +79,30 @@ export default function AppHeader({ collapsed, onToggle }: Props) {
       />
 
       {/* Right — user avatar + dropdown */}
-      <Dropdown menu={{ items: dropdownItems }} placement='bottomLeft' arrow>
-        <Space style={{ cursor: "pointer" }}>
-          <Avatar
-            size='small'
-            icon={<UserOutlined />}
-            style={{ backgroundColor: "#4F46E5" }}
-          />
-          <p className='capitalize text-base font-medium'>{user?.name}</p>
-        </Space>
-      </Dropdown>
+      <div className='flex items-center gap-x-2.5'>
+        {/*  */}
+
+        <NotificationSidebar
+          open={open}
+          showDrawer={showDrawer}
+          close={onClose}
+        />
+        {/*  */}
+
+        <Dropdown menu={{ items: dropdownItems }} placement='bottomLeft' arrow>
+          <Space style={{ cursor: "pointer" }}>
+            <Avatar
+              style={{
+                backgroundColor: "#4F46E5",
+                fontWeight: 600,
+                fontSize: 14,
+              }}
+            >
+              {user?.name ? getInitials(user.name) : <UserOutlined />}
+            </Avatar>
+          </Space>
+        </Dropdown>
+      </div>
     </Header>
   );
 }
