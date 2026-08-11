@@ -7,16 +7,20 @@ import {
   updateJob,
   deleteJob,
   getStats,
+  getFollowUpJobs,
 } from "../controllers/jobController.js";
 
 const jobRouter = express.Router();
 
 // get all routes protected
 jobRouter.get("/stats", userAuth, getStats); // ← must be BEFORE /:id
+jobRouter.get("/follow-up", userAuth, getFollowUpJobs);
+
 jobRouter.get("/", userAuth, getJobs);
 jobRouter.post("/", userAuth, addJob);
 jobRouter.get("/:id", userAuth, getJob);
 jobRouter.put("/:id", userAuth, updateJob);
 jobRouter.delete("/:id", userAuth, deleteJob);
+// followup
 
 export default jobRouter;

@@ -207,3 +207,23 @@ export async function getStats(req, res) {
     return res.json({ success: false, message: error.message });
   }
 }
+
+// followupJObs
+export async function getFollowUpJobs(req, res) {
+  try {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const jobs = await jobModel
+      .find({
+        userId: req.userId,
+        status: "Applied",
+        appliedDate: { $lte: sevenDaysAgo },
+      })
+      .sort({ appliedDate: 1 });
+
+    return res.json({ success: true, jobs });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+}
