@@ -227,3 +227,60 @@ export async function getFollowUpJobs(req, res) {
     return res.json({ success: false, message: error.message });
   }
 }
+
+// resume upload
+// ── Upload────
+export async function uploadResume(req, res) {
+  const { id } = req.params;
+  try {
+    const job = await jobModel.findOne({ _id: id, userId: req.userId });
+    if (!job) {
+      return res.json({ success: false, message: "Job not found" });
+    }
+
+    // delete old resume from Cloudinary if exists
+    if (job.resumePublicId) {
+      await cloudinary.uploader.destroy(job.resumePublicId, {
+        resource_type: "raw",
+      });
+    }
+
+    // save new resume URL
+    job.resumeUrl = req.file.path;
+    job.resumePublicId = req.file.filename;
+    await job.save();
+
+    return res.json({
+      success: true,
+      message: "Resume uploaded successfully",
+      resumeUrl: job.resumeUrl,
+    });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+}
+
+// ── Delete ─
+export async function deleteResume(req, res) {
+  const { id } = req.params;
+  try {
+    const job = await jobModel.findOne({ _id: id, userId: req.userId });
+    if (!job) {
+      return res.json({ success: false, message: "Job not found" });
+    }
+
+    if (job.resumePublicId) {
+      await cloudinary.uploader.destroy(job.resumePublicId, {
+        resource_type: "raw",
+      });
+    }
+
+    job.resumeUrl = "";
+    job.resumePublicId = "";
+    await job.save();
+
+    return res.json({ success: true, message: "Resume deleted" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+}
