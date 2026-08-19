@@ -1,5 +1,6 @@
 // CRUD + stats for jobs
 
+import cloudinary from "../config/cloudinary.js";
 import jobModel from "../models/jobModel.js";
 
 export async function addJob(req, res) {
