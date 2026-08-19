@@ -8,6 +8,8 @@ import {
   deleteJob,
   getStats,
   getFollowUpJobs,
+  uploadResume,
+  deleteResume,
 } from "../controllers/jobController.js";
 import upload from "../middleware/upload.js";
 
