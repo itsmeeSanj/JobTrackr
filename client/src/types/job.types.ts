@@ -21,6 +21,8 @@ export interface Job {
   notes: string;
   createdAt: string;
   updatedAt: string;
+  resumeUrl: string;
+  resumePublicId: string;
 }
 
 export interface JobStats {

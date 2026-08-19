@@ -13,7 +13,6 @@ import {
   ChangePassword,
   Dashboard,
   Applications,
-  AddApplications,
 } from "./import";
 
 const router = createBrowserRouter([
@@ -63,10 +62,10 @@ const router = createBrowserRouter([
                     index: true,
                     element: <Applications />,
                   },
-                  {
-                    path: "add",
-                    element: <AddApplications />,
-                  },
+                  // {
+                  //   path: "add",
+                  //   element: <AddApplications />,
+                  // },
                 ],
               },
               { path: "profile", element: <Profile /> },

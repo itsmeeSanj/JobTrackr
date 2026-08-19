@@ -26,9 +26,9 @@ export const Dashboard = React.lazy(
 export const Applications = React.lazy(
   () => import("../features/jobs/pages/applications/Applications"),
 );
-export const AddApplications = React.lazy(
-  () => import("../features/jobs/pages/applications/AddApplications"),
-);
+// export const AddApplications = React.lazy(
+//   () => import("../features/jobs/pages/applications/AddApplications"),
+// );
 export const Profile = React.lazy(
   () => import("../features/jobs/pages/profile/Profile"),
 );
