@@ -1,4 +1,5 @@
-import { Button, DatePicker, Form, Input, Select } from "antd";
+import React from "react";
+import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import {
   MdOutlineWork,
   MdOutlineLocationOn,
@@ -10,10 +11,12 @@ import dayjs from "dayjs";
 import { STATUS_OPTIONS } from "../../../constants/status";
 import { JOB_TYPE_OPTIONS } from "../../../constants/jobTypes";
 import type { Job } from "../../../types/job.types";
+import ResumeUploadForm from "./applications/ResumeUploadForm";
+import { uploadResume, deleteResume } from "../services/jobServices";
 
 interface Props {
   initialValues?: Partial<Job>;
-  onSubmit: (values: Partial<Job>) => Promise<void>;
+  onSubmit: (values: Partial<Job>, resumeFile: File | null) => Promise<void>;
   loading: boolean;
   mode: "add" | "edit";
 }
@@ -24,9 +27,9 @@ export default function JobForm({
   loading,
   mode,
 }: Props) {
+  const [resumeFile, setResumeFile] = React.useState<File | null>(null);
   const [form] = Form.useForm();
 
-  // ── pre-fill form on edit ─────────────────────────
   const defaultValues = initialValues
     ? {
         ...initialValues,
@@ -41,13 +44,28 @@ export default function JobForm({
       };
 
   const handleFinish = async (values: Partial<Job>) => {
-    await onSubmit({
-      ...values,
-      appliedDate: values.appliedDate
-        ? dayjs(values.appliedDate as unknown as string).toISOString()
-        : dayjs().toISOString(),
-    });
+    await onSubmit(
+      {
+        ...values,
+        appliedDate: values.appliedDate
+          ? dayjs(values.appliedDate as unknown as string).toISOString()
+          : dayjs().toISOString(),
+      },
+      resumeFile, // ← second arg
+    );
     if (mode === "add") form.resetFields();
+
+    // if (resumeFile && initialValues?._id) {
+    //   console.log("resume");
+    //   try {
+    //     await uploadResume(initialValues._id, resumeFile);
+    //     message.success("Resume uploaded!");
+    //   } catch {
+    //     message.error("Failed to upload resume");
+    //   }
+    // }
+
+    // if (mode === "add") form.resetFields();
   };
 
   return (
@@ -60,7 +78,6 @@ export default function JobForm({
       requiredMark={false}
     >
       <div className='grid grid-cols-1 md:grid-cols-2 gap-x-4'>
-        {/* Company */}
         <Form.Item
           name='company'
           label={<span className='font-base text-gray-700'>Company</span>}
@@ -75,7 +92,6 @@ export default function JobForm({
           />
         </Form.Item>
 
-        {/* Job Title */}
         <Form.Item
           name='role'
           label={<span className='font-base text-gray-700'>Job Title</span>}
@@ -88,7 +104,6 @@ export default function JobForm({
           />
         </Form.Item>
 
-        {/* Application Status */}
         <Form.Item
           name='status'
           label={
@@ -104,11 +119,10 @@ export default function JobForm({
           <Select
             size='large'
             placeholder='Select the application status'
-            options={STATUS_OPTIONS}
+            options={[...STATUS_OPTIONS]}
           />
         </Form.Item>
 
-        {/* Employment Type */}
         <Form.Item
           name='jobType'
           label={
@@ -118,11 +132,10 @@ export default function JobForm({
           <Select
             size='large'
             placeholder='Select the employment type'
-            options={JOB_TYPE_OPTIONS}
+            options={[...JOB_TYPE_OPTIONS]}
           />
         </Form.Item>
 
-        {/* Application Date */}
         <Form.Item
           name='appliedDate'
           label={
@@ -137,7 +150,6 @@ export default function JobForm({
           />
         </Form.Item>
 
-        {/* Work Location */}
         <Form.Item
           name='location'
           label={<span className='font-base text-gray-700'>Work Location</span>}
@@ -149,7 +161,6 @@ export default function JobForm({
           />
         </Form.Item>
 
-        {/* Salary */}
         <Form.Item
           name='salary'
           label={<span className='font-base text-gray-700'>Salary Range</span>}
@@ -161,7 +172,6 @@ export default function JobForm({
           />
         </Form.Item>
 
-        {/* Job Posting Link */}
         <Form.Item
           name='jobUrl'
           label={
@@ -176,6 +186,22 @@ export default function JobForm({
           />
         </Form.Item>
       </div>
+
+      {/* Resume */}
+      <Form.Item
+        label={<span className='text-gray-700 font-medium'>Resume (PDF)</span>}
+      >
+        <ResumeUploadForm
+          initialResumeUrl={initialValues?.resumeUrl}
+          onFileChange={(file) => setResumeFile(file)}
+          onDeleteResume={() => {
+            // ← uncommented
+            if (initialValues?._id) {
+              deleteResume(initialValues._id);
+            }
+          }}
+        />
+      </Form.Item>
 
       {/* Notes */}
       <Form.Item

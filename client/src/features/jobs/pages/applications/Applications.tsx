@@ -7,6 +7,7 @@ import {
   deleteJob,
   addJob,
   updateJob,
+  uploadResume,
 } from "../../services/jobServices";
 import ApplicationsFilters from "../../components/applications/ApplicationsFilters";
 import ApplicationsTable from "../../components/applications/ApplicationsTable";
@@ -64,11 +65,19 @@ export default function Applications() {
   }, [search, statusFilter, jobs]);
 
   // ── Add ───────────────────────────────────────────
-  const handleAdd = async (values: Partial<Job>) => {
+  const handleAdd = async (values: Partial<Job>, resumeFile: File | null) => {
     try {
       setSubmitting(true);
-      await addJob(values);
-      message.success("Application added!");
+      const newJob = await addJob(values);
+      if (resumeFile && newJob?._id) {
+        try {
+          await uploadResume(newJob._id, resumeFile);
+        } catch {
+          message.warning("Job saved but resume upload failed");
+        }
+      }
+
+      message.success("Application added successfully!");
       setIsModalOpen(false);
       fetchJobs();
     } catch (err) {
@@ -86,11 +95,23 @@ export default function Applications() {
     setIsEditOpen(true); // ← open edit modal
   };
 
-  const handleEditSubmit = async (values: Partial<Job>) => {
+  const handleEditSubmit = async (
+    values: Partial<Job>,
+    resumeFile: File | null,
+  ) => {
     if (!selectedJob) return;
     try {
       setSubmitting(true);
       await updateJob(selectedJob._id, values);
+
+      if (resumeFile) {
+        try {
+          await uploadResume(selectedJob._id, resumeFile);
+        } catch {
+          message.warning("Job updated but resume upload failed");
+        }
+      }
+
       message.success("Application updated!");
       setIsEditOpen(false);
       setSelectedJob(null); // ← clear selected job

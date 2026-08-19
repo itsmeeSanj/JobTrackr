@@ -7,7 +7,7 @@ interface Props {
   loading: boolean;
   job: Job | null;
   onClose: () => void;
-  onSubmit: (values: Partial<Job>) => Promise<void>;
+  onSubmit: (values: Partial<Job>, resumeFile: File | null) => Promise<void>;
 }
 
 export default function EditJobModal({
