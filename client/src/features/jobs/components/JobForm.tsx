@@ -78,6 +78,7 @@ export default function JobForm({
       requiredMark={false}
     >
       <div className='grid grid-cols-1 md:grid-cols-2 gap-x-4'>
+        {/* Company — required ✅ */}
         <Form.Item
           name='company'
           label={<span className='font-base text-gray-700'>Company</span>}
@@ -92,6 +93,7 @@ export default function JobForm({
           />
         </Form.Item>
 
+        {/* Job Title — required ✅ */}
         <Form.Item
           name='role'
           label={<span className='font-base text-gray-700'>Job Title</span>}
@@ -104,6 +106,7 @@ export default function JobForm({
           />
         </Form.Item>
 
+        {/* Status — required ✅ */}
         <Form.Item
           name='status'
           label={
@@ -123,11 +126,15 @@ export default function JobForm({
           />
         </Form.Item>
 
+        {/* Employment Type — added required ← */}
         <Form.Item
           name='jobType'
           label={
             <span className='font-base text-gray-700'>Employment Type</span>
           }
+          rules={[
+            { required: true, message: "Please select the employment type." },
+          ]}
         >
           <Select
             size='large'
@@ -136,11 +143,15 @@ export default function JobForm({
           />
         </Form.Item>
 
+        {/* Application Date — added required ← */}
         <Form.Item
           name='appliedDate'
           label={
             <span className='font-base text-gray-700'>Application Date</span>
           }
+          rules={[
+            { required: true, message: "Please select the application date." },
+          ]}
         >
           <DatePicker
             size='large'
@@ -150,9 +161,13 @@ export default function JobForm({
           />
         </Form.Item>
 
+        {/* Work Location — added required ← */}
         <Form.Item
           name='location'
           label={<span className='font-base text-gray-700'>Work Location</span>}
+          rules={[
+            { required: true, message: "Please enter the work location." },
+          ]}
         >
           <Input
             prefix={<MdOutlineLocationOn className='text-gray-400' />}
@@ -161,9 +176,13 @@ export default function JobForm({
           />
         </Form.Item>
 
+        {/* Salary — required ✅ */}
         <Form.Item
           name='salary'
           label={<span className='font-base text-gray-700'>Salary Range</span>}
+          rules={[
+            { required: true, message: "Please enter the salary range." },
+          ]}
         >
           <Input
             prefix={<IoCashOutline className='text-gray-400' />}
@@ -172,12 +191,16 @@ export default function JobForm({
           />
         </Form.Item>
 
+        {/* Job Posting Link — added required ← */}
         <Form.Item
           name='jobUrl'
           label={
             <span className='font-base text-gray-700'>Job Posting Link</span>
           }
-          rules={[{ type: "url", message: "Please enter a valid URL." }]}
+          rules={[
+            { required: true, message: "Please enter the job posting link." },
+            { type: "url", message: "Please enter a valid URL." },
+          ]}
         >
           <Input
             prefix={<MdOutlineLink className='text-gray-400' />}
