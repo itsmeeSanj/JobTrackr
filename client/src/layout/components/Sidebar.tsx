@@ -1,10 +1,6 @@
 import { Layout, Menu } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  AppstoreOutlined,
-  UnorderedListOutlined,
-  ProjectOutlined,
-} from "@ant-design/icons";
+import { AppstoreOutlined, UnorderedListOutlined } from "@ant-design/icons";
 
 const { Sider } = Layout;
 
@@ -29,35 +25,30 @@ const menuItems = [
     icon: <UnorderedListOutlined />,
     label: "Applications",
   },
-  {
-    key: "/kanban",
-    icon: <ProjectOutlined />,
-    label: "Kanban",
-  },
-
   // {
-  //   key: "/settings",
-  //   icon: <SettingOutlined />,
-  //   label: "Settings",
-  // },
-  // {
-  //   key: "/settings",
-  //   icon: <GoSidebarCollapse />,
-  //   label: "Collapse",
+  //   key: "/kanban",
+  //   icon: <ProjectOutlined />,
+  //   label: "Kanban",
   // },
 ];
 
 interface Props {
   collapsed: boolean;
+  onCollapse: (collapsed: boolean) => void;
 }
 
-export default function Sidebar({ collapsed }: Props) {
+export default function Sidebar({ collapsed, onCollapse }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
 
   return (
     <Sider
       trigger={null}
+      breakpoint='md'
+      collapsedWidth={64}
+      onBreakpoint={(broken) => {
+        onCollapse(broken);
+      }}
       collapsible
       collapsed={collapsed}
       width={250}
@@ -75,18 +66,29 @@ export default function Sidebar({ collapsed }: Props) {
         style={{
           minHeight: 56,
           margin: "0 0 12px ",
-          padding: "16px 16px",
+          padding: collapsed ? "16px 0" : "16px 24px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           overflow: "hidden",
-          borderBottom: "1px solid rgba(255,255,255,.6)",
+          borderBottom: "1px solid rgba(255,255,255,.3)",
         }}
       >
         {collapsed ? (
-          <span className='text-white font-bold text-xl'>J</span>
+          <span
+            className='text-white font-bold text-xl'
+            style={{
+              display: "inline-block",
+              textAlign: "center",
+              width: "100%",
+            }}
+          >
+            J
+          </span>
         ) : (
-          <span className='text-white font-bold text-xl'>JobTrackr</span>
+          <span className='text-white font-bold text-xl tracking-wide w-full text-left'>
+            JobTrackr
+          </span>
         )}
       </div>
 
@@ -94,9 +96,11 @@ export default function Sidebar({ collapsed }: Props) {
       <Menu
         mode='inline'
         className='bg-[#4F46E5]! '
-        selectedKeys={[location.pathname]} // ← highlights active page
+        selectedKeys={[location.pathname]}
         items={menuItems}
-        onClick={({ key }) => navigate(key)} // ← navigates on click
+        onClick={({ key }) => navigate(key)}
+        // 4. Overrides internal default antd paddings to cleanly fit 64px limits
+        inlineIndent={20}
       />
     </Sider>
   );

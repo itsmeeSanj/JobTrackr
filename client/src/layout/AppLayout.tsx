@@ -13,7 +13,10 @@ function AppLayout() {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       {/* Sidebar — defined once, used by all pages */}
-      <Sidebar collapsed={collapsed} />
+      <Sidebar
+        collapsed={collapsed}
+        onCollapse={(isCollapsed) => setCollapsed(isCollapsed)}
+      />
 
       <Layout>
         {/* Header — defined once, used by all pages */}
