@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, DatePicker, Form, Input, Select, message } from "antd";
+import { Button, DatePicker, Form, Input, Select } from "antd";
 import {
   MdOutlineWork,
   MdOutlineLocationOn,
@@ -12,7 +12,7 @@ import { STATUS_OPTIONS } from "../../../constants/status";
 import { JOB_TYPE_OPTIONS } from "../../../constants/jobTypes";
 import type { Job } from "../../../types/job.types";
 import ResumeUploadForm from "./applications/ResumeUploadForm";
-import { uploadResume, deleteResume } from "../services/jobServices";
+import { deleteResume } from "../services/jobServices";
 
 interface Props {
   initialValues?: Partial<Job>;
