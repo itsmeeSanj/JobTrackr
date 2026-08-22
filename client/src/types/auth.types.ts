@@ -3,6 +3,7 @@ export interface User {
   name: string;
   email: string;
   isAccountVerified: boolean;
+  role: "user" | "admin";
 }
 
 export interface AuthContextType {
