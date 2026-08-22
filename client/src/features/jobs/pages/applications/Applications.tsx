@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Spin, message } from "antd";
+import { Alert, Card, Spin, message } from "antd";
 
 import type { Job } from "../../../../types/job.types";
 import {
@@ -145,7 +145,7 @@ export default function Applications() {
   }
 
   return (
-    <>
+    <Card>
       <div className='flex flex-wrap items-center justify-between gap-4 mb-6'>
         <div>
           <h2 className='text-xl font-bold capitalize mb-1'>Applications</h2>
@@ -153,19 +153,6 @@ export default function Applications() {
             {filtered.length} of {jobs.length} applications
           </p>
         </div>
-        {/* <Button
-          type='primary'
-          size='large'
-          icon={<FaPlus />}
-          onClick={() => setIsModalOpen(true)}
-          style={{
-            background: "#4F46E5",
-            borderColor: "#4F46E5",
-            borderRadius: 8,
-          }}
-        >
-          Add Application
-        </Button> */}
       </div>
 
       {error && <Alert type='error' showIcon className='mb-4' />}
@@ -201,6 +188,6 @@ export default function Applications() {
         }}
         onSubmit={handleEditSubmit}
       />
-    </>
+    </Card>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Form, Input, message, Row, Spin } from "antd";
+import { Button, Card, Col, Form, Input, message, Row, Spin } from "antd";
 import {
   UserOutlined,
   EditOutlined,
@@ -71,7 +71,7 @@ export default function Profile() {
   }
 
   return (
-    <div>
+    <Card>
       {/* ── Page header ── */}
       <div className='mb-2'>
         <h2 className='text-xl font-bold capitalize '>My Account</h2>
@@ -181,6 +181,7 @@ export default function Profile() {
                       borderColor: "#4F46E5",
                       borderRadius: 8,
                       flex: 1,
+                      display: "inline-block",
                     }}
                   >
                     Save changes
@@ -191,6 +192,6 @@ export default function Profile() {
           </>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

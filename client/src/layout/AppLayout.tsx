@@ -29,11 +29,18 @@ function AppLayout() {
         <Content
           style={{
             margin: "16px",
-            padding: 24,
-            background: "#fff",
-            borderRadius: 12,
+            padding: 0,
+            // background: "#fff",
+            borderRadius: 0,
             minHeight: 280,
             fontSize: 16,
+
+            // margin: "16px",
+            // padding: 24,
+            // background: "#fff",
+            // borderRadius: 12,
+            // minHeight: 280,
+            // fontSize: 16,
           }}
         >
           <Outlet /> {/* ← Dashboard, Applications, Kanban render here */}

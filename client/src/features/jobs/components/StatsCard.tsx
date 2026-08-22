@@ -21,8 +21,8 @@ export default function StatsCard({
     <Card>
       <div className='flex items-center justify-between'>
         <div>
-          <h2 className='text-[15px] uppercase font-bold mb-4'>{title}</h2>
-          <p className='text-2xl text-gray-900'>
+          <h2 className='text-[14px] uppercase font-bold mb-4'>{title}</h2>
+          <p className='text-xl text-gray-900'>
             {value}
             {suffix && (
               <span className='text-base font-normal ml-1'>{suffix}</span>
@@ -30,7 +30,7 @@ export default function StatsCard({
           </p>
         </div>
         <div
-          className='w-13 h-13 rounded-xl flex items-center justify-center text-xl'
+          className='w-12 h-12 rounded-xl flex items-center justify-center text-xl'
           style={{ backgroundColor: `${color}18`, color }}
         >
           {icon}

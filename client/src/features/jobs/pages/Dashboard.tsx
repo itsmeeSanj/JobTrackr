@@ -1,47 +1,75 @@
-// src/features/jobs/pages/Dashboard.tsx
 import React from "react";
-import dayjs from "dayjs";
-import { Col, Row, Spin, Alert } from "antd";
-import relativeTime from "dayjs/plugin/relativeTime";
+import { Col, Row, Spin, Alert, Card } from "antd";
 
 import { useAuth } from "../../auth/hooks/useAuth";
 import type { Job, JobStats } from "../../../types/job.types";
 import { getJobs, getStats } from "../services/jobServices";
+import {
+  getAllUsers,
+  getPlatformStats,
+  type AdminUser,
+  type PlatformStats,
+} from "../../admin/services/adminService";
 
 import StatsGrid from "../components/StatsGrid ";
 import StatusPieChart from "../components/StatusPieChart";
 import StatusBarChart from "../components/StatusBarChart";
 import RecentJobTable from "../components/RecentJobTable";
-
-dayjs.extend(relativeTime);
+import AdminStatsGrid from "../components/admin/AdminStatsGrid";
+import AdminUsersTable from "../components/admin/AdminUsersTable";
+import WelcomeBanner from "../components/WelcomeBanner";
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const isAdmin = user?.role == "admin";
+
   const [stats, setStats] = React.useState<JobStats | null>(null);
   const [recentJobs, setRecentJobs] = React.useState<Job[]>([]);
+
+  // admin data
+  const [platformStats, setPlatformStats] =
+    React.useState<PlatformStats | null>(null);
+  const [users, setUsers] = React.useState<AdminUser[]>([]);
+
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
 
-  // ── Fetch stats + recent jobs ─────────────────────
-  React.useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
+  // ── Fetch data based on role  ─────────────────────
+  const loadData = async () => {
+    try {
+      setLoading(true);
+
+      if (isAdmin) {
+        const [platformData, usersData, statsData, jobsData] =
+          await Promise.all([
+            getPlatformStats(),
+            getAllUsers(),
+            getStats(),
+            getJobs(),
+          ]);
+        setPlatformStats(platformData);
+        setUsers(usersData);
+        setStats(statsData);
+        setRecentJobs(jobsData.slice(0, 5));
+      } else {
         const [statsData, jobsData] = await Promise.all([
           getStats(),
           getJobs(),
         ]);
         setStats(statsData);
-        setRecentJobs(jobsData.slice(0, 5)); // ← last 5 jobs
-      } catch (err) {
-        const e = err as Error;
-        setError(e.message || "Failed to load dashboard");
-      } finally {
-        setLoading(false);
+        setRecentJobs(jobsData.slice(0, 5));
       }
-    };
-    loadData();
-  }, []);
+    } catch (err) {
+      const e = err as Error;
+      setError(e.message || "Failed to load dashboard");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (user) loadData();
+  }, [isAdmin, user]);
 
   if (loading) {
     return (
@@ -54,42 +82,60 @@ export default function Dashboard() {
   return (
     <>
       {/* ── Welcome banner ── */}
-      <div
-        className='rounded-2xl py-7 px-4 mb-4'
-        style={{
-          background: "linear-gradient(135deg, #4F46E5 0%, #3730A3 100%)",
-        }}
-      >
-        <h2 className='text-xl font-bold pb-1 text-white'>
-          Welcome back, <span className='capitalize'>{user?.name}</span>!
-        </h2>
-        <p className='text-sm text-gray-100'>
-          {dayjs().format("dddd, MMMM D, YYYY")} · {stats?.thisWeek ?? 0}{" "}
-          applications this week
-        </p>
-      </div>
+      <WelcomeBanner
+        isAdmin={isAdmin}
+        user={user}
+        stats={stats}
+        platform={platformStats}
+      />
 
       {/* ── Error ── */}
       {error && <Alert type='error' showIcon className='mb-4' />}
 
-      {/* ── Stats cards ── */}
-      <StatsGrid stats={stats} />
+      {isAdmin && (
+        <>
+          <Card
+            title={
+              <h2 className='text-[15px] uppercase font-bold'>
+                Platform Overview
+              </h2>
+            }
+          >
+            <AdminStatsGrid stats={platformStats} />
+          </Card>
 
-      {/* ── Charts row ── */}
-      <Row gutter={[16, 16]} className='mb-4'>
-        {/* Pie chart */}
-        <Col xs={24} lg={12}>
-          <StatusPieChart stats={stats} />
-        </Col>
+          {/* StatsGrid */}
+          <Card
+            title={
+              <h2 className='text-[15px] uppercase font-bold'>
+                My Applications
+              </h2>
+            }
+            className='my-4!'
+          >
+            <StatsGrid stats={stats} />
+          </Card>
 
-        {/* Bar chart */}
-        <Col xs={24} lg={12}>
-          <StatusBarChart stats={stats} />
-        </Col>
-      </Row>
+          <AdminUsersTable users={users} onRefresh={loadData} />
+        </>
+      )}
 
-      {/* ── Recent applications ── */}
-      <RecentJobTable jobs={recentJobs} />
+      {!isAdmin && (
+        <>
+          <StatsGrid stats={stats} />
+
+          <Row gutter={[16, 16]} className='mb-4'>
+            <Col xs={24} lg={12}>
+              <StatusPieChart stats={stats} />
+            </Col>
+            <Col xs={24} lg={12}>
+              <StatusBarChart stats={stats} />
+            </Col>
+          </Row>
+
+          <RecentJobTable jobs={recentJobs} />
+        </>
+      )}
     </>
   );
 }

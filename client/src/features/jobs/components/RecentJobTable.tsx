@@ -86,8 +86,14 @@ export default function RecentJobTable({ jobs }: Props) {
         columns={columns}
         dataSource={jobs}
         rowKey='_id'
-        pagination={false}
+        scroll={{ x: true }}
         locale={{ emptyText: <Empty description='No applications yet' /> }}
+        pagination={{
+          pageSize: 10,
+          showSizeChanger: false,
+          showTotal: (total, range) =>
+            `${range[0]}-${range[1]} of ${total} users`,
+        }}
       />
     </Card>
   );

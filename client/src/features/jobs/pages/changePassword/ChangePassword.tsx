@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Form, Input, message, Row } from "antd";
+import { Button, Card, Col, Form, Input, message, Row } from "antd";
 import { LockOutlined, SaveOutlined } from "@ant-design/icons";
 
 import api from "../../../../lib/axios";
@@ -35,7 +35,7 @@ export default function ChangePassword() {
   };
 
   return (
-    <>
+    <Card>
       <div className='mb-4'>
         <h2 className='text-xl font-bold capitalize '>Change password</h2>
         <p className='text-gray-500 text-sm'>
@@ -131,6 +131,6 @@ export default function ChangePassword() {
           </Form>
         </Col>
       </Row>
-    </>
+    </Card>
   );
 }
