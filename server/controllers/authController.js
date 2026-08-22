@@ -34,7 +34,7 @@ export async function register(req, res) {
     await user.save();
 
     //  Send verification email
-   transporter.sendMail({
+    transporter.sendMail({
       from: process.env.SENDER_EMAIL,
       to: email,
       subject: "JobTrackr — Verify your email",
@@ -71,6 +71,7 @@ export async function register(req, res) {
         name: user.name,
         email: user.email,
         isAccountVerified: user.isAccountVerified,
+        role: user.role,
       },
     });
   } catch (error) {
@@ -119,6 +120,7 @@ export async function login(req, res) {
         name: user.name,
         email: user.email,
         isAccountVerified: user.isAccountVerified,
+        role: user.role,
       },
     });
   } catch (error) {

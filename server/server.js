@@ -7,6 +7,7 @@ import connectDB from "./config/mongodb.js";
 import authRouter from "./routes/authRoutes.js";
 import jobRouter from "./routes/jobRoutes.js";
 import userRouter from "./routes/userRouter.js";
+import adminRouter from "./routes/adminRouter.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -39,6 +40,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/jobs", jobRouter);
 app.use("/api/user", userRouter);
+app.use("/api/admin", adminRouter);
 
 // start server
 app.listen(port, () => {
